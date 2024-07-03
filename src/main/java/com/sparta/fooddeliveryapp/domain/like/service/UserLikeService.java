@@ -5,13 +5,21 @@ import com.sparta.fooddeliveryapp.domain.like.dto.UserLikeResponseDto;
 import com.sparta.fooddeliveryapp.domain.like.entity.UserLike;
 import com.sparta.fooddeliveryapp.domain.like.entity.UserLikeType;
 import com.sparta.fooddeliveryapp.domain.like.repository.UserLikeRepository;
+import com.sparta.fooddeliveryapp.domain.order.dto.OrderDetailResponseDto;
+import com.sparta.fooddeliveryapp.domain.order.dto.OrderResponseDto;
+import com.sparta.fooddeliveryapp.domain.order.entity.OrderDetail;
+import com.sparta.fooddeliveryapp.domain.order.entity.Orders;
 import com.sparta.fooddeliveryapp.domain.review.entity.Review;
 import com.sparta.fooddeliveryapp.domain.store.entity.Store;
 import com.sparta.fooddeliveryapp.domain.user.entity.User;
 import com.sparta.fooddeliveryapp.global.error.exception.DuplicateLikeException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,6 +52,21 @@ public class UserLikeService {
                 () -> new NullPointerException("등록된 좋아요가 없습니다")
         );
         return userLikeList.stream().map(
+                userLike -> UserLikeResponseDto.builder()
+                        .userId(userLike.getUser().getUserId())
+                        .userLikeType(userLike.getUserLikeType())
+                        .typeId(userLike.getTypeId())
+                        .build()
+        ).toList();
+    }
+
+    public List<UserLikeResponseDto> getAllUserLiked(UserLikeRequestDto userLikeRequestDto, User user, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<UserLike> userLikePage = userLikeRepository.findAllByUserLikeTypeAndUserUserIdOrderByTypeIdDesc(userLikeRequestDto.getUserLikeType(), user.getUserId(), pageable).orElseThrow(
+                () -> new NullPointerException("등록된 좋아요가 없습니다")
+        );
+
+        return userLikePage.stream().map(
                 userLike -> UserLikeResponseDto.builder()
                         .userId(userLike.getUser().getUserId())
                         .userLikeType(userLike.getUserLikeType())

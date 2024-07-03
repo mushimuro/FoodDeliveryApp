@@ -60,4 +60,14 @@ public class UserLikeController {
                         .data(userLikeList)
                         .build());
     }
+
+    @GetMapping("/search-all-liked")
+    public List<UserLikeResponseDto> getAllUserLiked(
+            @RequestBody UserLikeRequestDto userLikeRequestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ) {
+        return userLikeService.getAllUserLiked(userLikeRequestDto, userDetails.getUser(), page, size);
+    }
 }

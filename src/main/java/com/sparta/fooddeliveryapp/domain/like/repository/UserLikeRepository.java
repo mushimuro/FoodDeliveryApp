@@ -3,6 +3,8 @@ package com.sparta.fooddeliveryapp.domain.like.repository;
 import com.sparta.fooddeliveryapp.domain.like.entity.UserLike;
 import com.sparta.fooddeliveryapp.domain.like.entity.UserLikeType;
 import com.sparta.fooddeliveryapp.domain.user.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -15,4 +17,6 @@ public interface UserLikeRepository extends JpaRepository<UserLike, Long> {
     Optional<UserLike> findByUserAndUserLikeTypeAndTypeId(User user, UserLikeType userLikeType, Long typeId);
 
     Optional<List<UserLike>> findAllByUserLikeTypeAndTypeId(UserLikeType userLikeType, Long typeId);
+
+    Optional<Page<UserLike>> findAllByUserLikeTypeAndUserUserIdOrderByTypeIdDesc(UserLikeType userLikeType, Long userId, Pageable pageable);
 }
