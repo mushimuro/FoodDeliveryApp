@@ -62,6 +62,12 @@ public class User extends TimeStamped {
     @Column(name = "kakao_id")
     private Long kakaoId;
 
+    @Column(name = "count_store_liked")
+    private int countStoreLiked;
+
+    @Column(name = "count_review_liked")
+    private int countReviewLiked;
+
     // image 가져오기
     // 생성 및 수정 시간은 타 클래스 implement 가져오는걸로
 
@@ -82,6 +88,8 @@ public class User extends TimeStamped {
     public void updateAddress(String address){this.address = address;}
     public void updateIntro(String intro){this.intro = intro;}
     public void updatePassword(String password){this.password = password;}
+    public void updateCountStoreLiked(){this.countStoreLiked += 1;}
+    public void updateCountReviewLiked(){this.countReviewLiked += 1;}
 
     public User(String loginId, String password, String name, String nickname, String address, String phone,
                 String email, String intro, UserRoleEnum role, UserStatusEnum status) {
@@ -95,5 +103,7 @@ public class User extends TimeStamped {
         this.intro = intro;
         this.role = role;
         this.status = status;
+        this.countStoreLiked = 0;
+        this.countReviewLiked = 0;
     }
 }

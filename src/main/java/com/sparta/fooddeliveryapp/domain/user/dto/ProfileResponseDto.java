@@ -12,8 +12,10 @@ public class ProfileResponseDto {
     private final String phone;
     private final String email;
     private final String intro;
+    private final int countStoreLiked;
+    private final int countReviewLiked;
 
-    public ProfileResponseDto(Long userId, String name, String nickname, String address, String phone, String email, String intro) {
+    public ProfileResponseDto(Long userId, String name, String nickname, String address, String phone, String email, String intro, int countStoreLiked, int countReviewLiked) {
         this.userId = userId;
         this.name = name;
         this.nickname = nickname;
@@ -21,5 +23,7 @@ public class ProfileResponseDto {
         this.phone = phone;
         this.email = email;
         this.intro = intro;
+        this.countStoreLiked = countStoreLiked;
+        this.countReviewLiked = countReviewLiked;
     }
 }

@@ -12,7 +12,10 @@ import com.sparta.fooddeliveryapp.domain.order.entity.Orders;
 import com.sparta.fooddeliveryapp.domain.review.entity.Review;
 import com.sparta.fooddeliveryapp.domain.store.entity.Store;
 import com.sparta.fooddeliveryapp.domain.user.entity.User;
+import com.sparta.fooddeliveryapp.domain.user.repository.UserRepository;
 import com.sparta.fooddeliveryapp.global.error.exception.DuplicateLikeException;
+import com.sparta.fooddeliveryapp.global.error.exception.UserNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,14 +29,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserLikeService {
     private final UserLikeRepository userLikeRepository;
+    private final UserRepository userRepository;
 
+    @Transactional
     public UserLike addUserLike(User user, UserLikeRequestDto userLikeRequestDto) {
-        if(userLikeRepository.existsByUserAndUserLikeTypeAndTypeId(user, userLikeRequestDto.getUserLikeType(), userLikeRequestDto.getTypeId())){
+        User tempUser = userRepository.findByLoginId(user.getLoginId()).orElseThrow(UserNotFoundException::new);
+        if(userLikeRepository.existsByUserAndUserLikeTypeAndTypeId(tempUser, userLikeRequestDto.getUserLikeType(), userLikeRequestDto.getTypeId())){
             throw new DuplicateLikeException("이미 좋아요를 눌렀습니다");
         }
+        if(userLikeRequestDto.getUserLikeType().equals(UserLikeType.STORE)){
+            tempUser.updateCountStoreLiked();
+        }else{
+            tempUser.updateCountReviewLiked();
+        }
+
         return userLikeRepository.save(
                 UserLike.builder()
-                        .user(user)
+                        .user(tempUser)
                         .userLikeType(userLikeRequestDto.getUserLikeType())
                         .typeId(userLikeRequestDto.getTypeId())
                         .build());
