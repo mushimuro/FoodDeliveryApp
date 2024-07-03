@@ -3,7 +3,10 @@ package com.sparta.fooddeliveryapp.domain.like.service;
 import com.sparta.fooddeliveryapp.domain.like.dto.UserLikeRequestDto;
 import com.sparta.fooddeliveryapp.domain.like.dto.UserLikeResponseDto;
 import com.sparta.fooddeliveryapp.domain.like.entity.UserLike;
+import com.sparta.fooddeliveryapp.domain.like.entity.UserLikeType;
 import com.sparta.fooddeliveryapp.domain.like.repository.UserLikeRepository;
+import com.sparta.fooddeliveryapp.domain.review.entity.Review;
+import com.sparta.fooddeliveryapp.domain.store.entity.Store;
 import com.sparta.fooddeliveryapp.domain.user.entity.User;
 import com.sparta.fooddeliveryapp.global.error.exception.DuplicateLikeException;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +50,19 @@ public class UserLikeService {
                         .typeId(userLike.getTypeId())
                         .build()
         ).toList();
+    }
+
+    public int countStoreLiked(Store store){
+        List<UserLike> userLikeList = userLikeRepository.findAllByUserLikeTypeAndTypeId(UserLikeType.STORE, store.getStoreId()).orElseThrow(
+                () -> new NullPointerException("조회된 매장이 없습니다")
+        );
+        return userLikeList.size();
+    }
+
+    public int countReviewLiked(Review review){
+        List<UserLike> userLikeList = userLikeRepository.findAllByUserLikeTypeAndTypeId(UserLikeType.REVIEW, review.getReviewId()).orElseThrow(
+                () -> new NullPointerException("조회된 리뷰가 없습니다")
+        );
+        return userLikeList.size();
     }
 }

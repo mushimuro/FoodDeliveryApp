@@ -1,5 +1,6 @@
 package com.sparta.fooddeliveryapp.domain.store.controller;
 
+import com.sparta.fooddeliveryapp.domain.like.service.UserLikeService;
 import com.sparta.fooddeliveryapp.domain.store.dto.StoreRequestDto;
 import com.sparta.fooddeliveryapp.domain.store.dto.StoreResponseDto;
 import com.sparta.fooddeliveryapp.domain.store.entity.Store;
@@ -22,9 +23,12 @@ import java.util.stream.Collectors;
 public class StoreController {
     @Autowired
     private final StoreService storeService;
+    @Autowired
+    private final UserLikeService userLikeService;
 
-    public StoreController(StoreService storeService) {
+    public StoreController(StoreService storeService, UserLikeService userLikeService) {
         this.storeService = storeService;
+        this.userLikeService = userLikeService;
     }
 
     @GetMapping
@@ -39,7 +43,8 @@ public class StoreController {
                 store.getRate(),
                 store.getStoreName(),
                 store.getDialNumber(),
-                store.getIntro()
+                store.getIntro(),
+                userLikeService.countStoreLiked(store)
         )).collect(Collectors.toList());
     }
 
@@ -60,7 +65,8 @@ public class StoreController {
                 store.getRate(),
                 store.getStoreName(),
                 store.getDialNumber(),
-                store.getIntro()
+                store.getIntro(),
+                userLikeService.countStoreLiked(store)
         )).collect(Collectors.toList());
 
         return ResponseEntity.ok(response);

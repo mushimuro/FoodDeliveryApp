@@ -24,5 +24,6 @@ public class UserLike {
     @Enumerated(EnumType.STRING)
     private UserLikeType userLikeType;
 
+    // 좋아요한 
     private Long typeId;
 }

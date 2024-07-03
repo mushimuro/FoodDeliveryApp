@@ -1,5 +1,6 @@
 package com.sparta.fooddeliveryapp.domain.review.service;
 
+import com.sparta.fooddeliveryapp.domain.like.service.UserLikeService;
 import com.sparta.fooddeliveryapp.domain.order.entity.Orders;
 import com.sparta.fooddeliveryapp.domain.order.repository.OrderRepository;
 import com.sparta.fooddeliveryapp.domain.review.dto.ReviewCreateRequestDto;
@@ -28,6 +29,7 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final OrderRepository orderRepository;
+    private final UserLikeService userLikeService;
 
     @Transactional
     public void createReview(User user, ReviewCreateRequestDto requestDto) {
@@ -68,6 +70,7 @@ public class ReviewService {
                         .ordersId(review.getOrdersId())
                         .content(review.getContent())
                         .rate(review.getRate())
+                        .liked(userLikeService.countReviewLiked(review))
                         .build()
                         ).toList()
         );
