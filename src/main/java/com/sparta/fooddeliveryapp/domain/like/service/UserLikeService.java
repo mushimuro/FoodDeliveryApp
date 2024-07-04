@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -86,6 +87,24 @@ public class UserLikeService {
                         .build()
         ).toList();
     }
+
+    // QueryDSL
+    public List<UserLikeResponseDto> getUserLikeListWithPageAndSortPriceDesc(long userId, int page, int size){
+
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        return userLikeRepository.getUserLikeListWithPageAndSortPriceDesc(userId, pageRequest.getOffset(), pageRequest.getPageSize())
+                .stream()
+                .map(m ->
+                        UserLikeResponseDto.builder()
+                                .userId(m.getUser().getUserId())
+                                .userLikeType(m.getUserLikeType())
+                                .typeId(m.getTypeId())
+                                .build()
+                ).collect(Collectors.toList());
+    }
+
+
 
     public int countStoreLiked(Store store){
         List<UserLike> userLikeList = userLikeRepository.findAllByUserLikeTypeAndTypeId(UserLikeType.STORE, store.getStoreId()).orElseThrow(

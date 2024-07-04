@@ -61,11 +61,46 @@ Content-Type: application/json
   "role" : "USER"
 }
 
+
+
+
 ### 로그인 테스트
 POST https://localhost:443/api/users/login
 Content-Type: application/json
+testAA: testcode112ffkkejfaleijfslekfjl
 
 {
 "loginId" : "id1111",
 "password" : "Qwer1111!"
 }
+> {%
+    client.global.set("Authorization", response.headers.valueOf("Authorization"));
+    client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+%}
+
+### 매장 등록
+POST https://localhost:443/api/stores
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpZDIyMjIiLCJhdXRoIjoiU0VMTEVSIiwiZXhwIjoxNzIwMDk5MzA5LCJpYXQiOjE3MjAwOTU3MDl9.8zRb0EqHnIz9HGjb1SGKJgQt9y_PjWNaKfJDdtRR-qI
+
+{
+  "storeId" : 1,
+  "storeName" : "역전할머니맥주",
+  "intro" : "할무니 맥주 부천소사본점",
+  "dialNumber" : "0507-1351-0514"
+}
+
+### 좋아요 등록
+POST https://localhost:443/api/like
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpZDExMTEiLCJhdXRoIjoiVVNFUiIsImV4cCI6MTcyMDA5OTg1OSwiaWF0IjoxNzIwMDk2MjU5fQ.kxgmwURUCx9PnM35Tcrr3cDA2eCmX7EWvsOeTRGpgI4
+
+{
+    "userLikeType" : "STORE",
+    "typeId" : 1
+}
+
+### 쿼리DSL test : 유저의 좋아요 누른 기록 모두 조회
+GET https://localhost:443/api/like/get-user-like
+Content-Type: application/json; charset=UTF-8
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpZDExMTEiLCJhdXRoIjoiVVNFUiIsImV4cCI6MTcyMDEwNDk1MCwiaWF0IjoxNzIwMTAxMzUwfQ.ZpYV9oGvks0cHyRrXAgOs4D5hX0bagKkisZ5lYFRxXg

@@ -69,27 +69,6 @@ public class OrderService {
             OrderDetail orderDetail = new OrderDetail(orders, cartDetail.getMenu(), 1);
             orderDetailRepository.save(orderDetail);
         }
-//        List<OrderDetail> orderDetailList = OrderDetail.
-//        List<OrderDetailRequestDto> orderDetailDtoList = orderRequestDto.getOrderDetailDtoList();
-//        // 비어있으면 "담은 메뉴가 없습니다!" 오류를 던짐, 있으면 정상로직을 수행
-//        if (orderDetailDtoList.isEmpty()) {
-//            throw new NullPointerException("장바구니가 비어있습니다.");
-//        }   //없으면 로직 수행 안하고 계속~
-//        // 없으면, store = null, orderDetailDtoList = null, orders 생성, save
-//
-//        Long menuId = orderDetailDtoList.get(0).getMenuId();
-//        Store store = menuRepository.findById(menuId).orElseThrow().getStore();
-//
-//        Orders orders = new Orders(store, user, orderRequestDto.getTotalPrice());
-//        //주문 생성
-//        orderRepository.save(orders);
-//
-//        //주문 상세
-//        for (OrderDetailRequestDto dto : orderDetailDtoList) {
-//            Menu menu = menuRepository.findById(dto.getMenuId()).orElseThrow();
-//            OrderDetail orderDetail = new OrderDetail(orders, menu, dto.getCount());
-//            orderDetailRepository.save(orderDetail);
-//        }
     }
 
     public List<OrderResponseDto> getOrderList(User user, int page, int size) {

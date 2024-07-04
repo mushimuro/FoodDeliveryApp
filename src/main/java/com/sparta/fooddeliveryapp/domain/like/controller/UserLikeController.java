@@ -61,6 +61,17 @@ public class UserLikeController {
                         .build());
     }
 
+    // QueryDSL testing : order
+    @GetMapping("/get-user-like")
+    public List<UserLikeResponseDto> getUserLikeListWithPageAndSortPriceDesc(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ) {
+        return userLikeService.getUserLikeListWithPageAndSortPriceDesc(userDetails.getUser().getUserId(), page, size);
+    }
+
+
     @GetMapping("/search-all-liked")
     public List<UserLikeResponseDto> getAllUserLiked(
             @RequestBody UserLikeRequestDto userLikeRequestDto,
