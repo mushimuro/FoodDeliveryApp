@@ -5,10 +5,6 @@ import com.sparta.fooddeliveryapp.domain.like.dto.UserLikeResponseDto;
 import com.sparta.fooddeliveryapp.domain.like.entity.UserLike;
 import com.sparta.fooddeliveryapp.domain.like.entity.UserLikeType;
 import com.sparta.fooddeliveryapp.domain.like.repository.UserLikeRepository;
-import com.sparta.fooddeliveryapp.domain.order.dto.OrderDetailResponseDto;
-import com.sparta.fooddeliveryapp.domain.order.dto.OrderResponseDto;
-import com.sparta.fooddeliveryapp.domain.order.entity.OrderDetail;
-import com.sparta.fooddeliveryapp.domain.order.entity.Orders;
 import com.sparta.fooddeliveryapp.domain.review.entity.Review;
 import com.sparta.fooddeliveryapp.domain.store.entity.Store;
 import com.sparta.fooddeliveryapp.domain.user.entity.User;
@@ -17,12 +13,9 @@ import com.sparta.fooddeliveryapp.global.error.exception.DuplicateLikeException;
 import com.sparta.fooddeliveryapp.global.error.exception.UserNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +26,7 @@ public class UserLikeService {
     private final UserRepository userRepository;
 
     @Transactional
-    public UserLike addUserLike(User user, UserLikeRequestDto userLikeRequestDto) {
+    public void addUserLike(User user, UserLikeRequestDto userLikeRequestDto) {
         User tempUser = userRepository.findByLoginId(user.getLoginId()).orElseThrow(UserNotFoundException::new);
         if(userLikeRepository.existsByUserAndUserLikeTypeAndTypeId(tempUser, userLikeRequestDto.getUserLikeType(), userLikeRequestDto.getTypeId())){
             throw new DuplicateLikeException("이미 좋아요를 눌렀습니다");
@@ -44,7 +37,7 @@ public class UserLikeService {
             tempUser.updateCountReviewLiked();
         }
 
-        return userLikeRepository.save(
+        userLikeRepository.save(
                 UserLike.builder()
                         .user(tempUser)
                         .userLikeType(userLikeRequestDto.getUserLikeType())

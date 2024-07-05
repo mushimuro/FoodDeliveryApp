@@ -15,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserLikeRepositoryImpl implements UserLikeRepositoryCustom {
 
-    private final JPAQueryFactory queryFactory;
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override

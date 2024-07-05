@@ -2,11 +2,7 @@ package com.sparta.fooddeliveryapp.domain.like.controller;
 
 import com.sparta.fooddeliveryapp.domain.like.dto.UserLikeRequestDto;
 import com.sparta.fooddeliveryapp.domain.like.dto.UserLikeResponseDto;
-import com.sparta.fooddeliveryapp.domain.like.entity.UserLike;
-import com.sparta.fooddeliveryapp.domain.like.repository.UserLikeRepository;
 import com.sparta.fooddeliveryapp.domain.like.service.UserLikeService;
-import com.sparta.fooddeliveryapp.domain.user.entity.User;
-import com.sparta.fooddeliveryapp.domain.user.repository.UserRepository;
 import com.sparta.fooddeliveryapp.global.common.ResponseDto;
 import com.sparta.fooddeliveryapp.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +25,7 @@ public class UserLikeController {
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @RequestBody UserLikeRequestDto userLikeRequestDto
     ) {
-        UserLike userLike = userLikeService.addUserLike(userDetails.getUser(), userLikeRequestDto);
+        userLikeService.addUserLike(userDetails.getUser(), userLikeRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(
                 ResponseDto.builder()
                         .status(HttpStatus.OK)
