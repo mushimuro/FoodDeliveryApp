@@ -70,7 +70,7 @@ Content-Type: application/json
 testAA: testcode112ffkkejfaleijfslekfjl
 
 {
-"loginId" : "id1111",
+"loginId" : "id2222",
 "password" : "Qwer1111!"
 }
 > {%
@@ -81,26 +81,39 @@ testAA: testcode112ffkkejfaleijfslekfjl
 ### 매장 등록
 POST https://localhost:443/api/stores
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpZDIyMjIiLCJhdXRoIjoiU0VMTEVSIiwiZXhwIjoxNzIwMDk5MzA5LCJpYXQiOjE3MjAwOTU3MDl9.8zRb0EqHnIz9HGjb1SGKJgQt9y_PjWNaKfJDdtRR-qI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpZDIyMjIiLCJhdXRoIjoiU0VMTEVSIiwiZXhwIjoxNzIwMTQ3NzIwLCJpYXQiOjE3MjAxNDQxMjB9.s1xcGfBwO2DqxIk9n4ncd3cAZWy_PeTQnZabv1vAsPg
 
 {
-  "storeId" : 1,
-  "storeName" : "역전할머니맥주",
-  "intro" : "할무니 맥주 부천소사본점",
-  "dialNumber" : "0507-1351-0514"
+  "storeName" : "역전할머니맥주2",
+  "intro" : "할무니 맥주 부천소사본점2",
+  "dialNumber" : "0507-1351-0512"
 }
 
 ### 좋아요 등록
 POST https://localhost:443/api/like
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpZDExMTEiLCJhdXRoIjoiVVNFUiIsImV4cCI6MTcyMDA5OTg1OSwiaWF0IjoxNzIwMDk2MjU5fQ.kxgmwURUCx9PnM35Tcrr3cDA2eCmX7EWvsOeTRGpgI4
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpZDIyMjIiLCJhdXRoIjoiU0VMTEVSIiwiZXhwIjoxNzIwMTQ3NzIwLCJpYXQiOjE3MjAxNDQxMjB9.s1xcGfBwO2DqxIk9n4ncd3cAZWy_PeTQnZabv1vAsPg
 
 {
     "userLikeType" : "STORE",
-    "typeId" : 1
+    "typeId" : 2
 }
 
 ### 쿼리DSL test : 유저의 좋아요 누른 기록 모두 조회
-GET https://localhost:443/api/like/get-user-like
+GET https://localhost:443/api/like
 Content-Type: application/json; charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpZDExMTEiLCJhdXRoIjoiVVNFUiIsImV4cCI6MTcyMDEwNDk1MCwiaWF0IjoxNzIwMTAxMzUwfQ.ZpYV9oGvks0cHyRrXAgOs4D5hX0bagKkisZ5lYFRxXg
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpZDIyMjIiLCJhdXRoIjoiU0VMTEVSIiwiZXhwIjoxNzIwMTQ3NzIwLCJpYXQiOjE3MjAxNDQxMjB9.s1xcGfBwO2DqxIk9n4ncd3cAZWy_PeTQnZabv1vAsPg
+
+### 쿼리DSL test : STORE / REVIEW 에 따른 유저의 좋아요 누른 기록 모두 조회
+GET https://localhost:443/api/like/by-type
+Content-Type: application/json; charset=UTF-8
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpZDIyMjIiLCJhdXRoIjoiU0VMTEVSIiwiZXhwIjoxNzIwMTQ3NzIwLCJpYXQiOjE3MjAxNDQxMjB9.s1xcGfBwO2DqxIk9n4ncd3cAZWy_PeTQnZabv1vAsPg
+
+{
+  "userLikeType" : "STORE"
+}
+
+### 쿼리 DSL test
+GET https://localhost:443//api/users/profile
+Content-Type: application/json; charset=UTF-8
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpZDIyMjIiLCJhdXRoIjoiU0VMTEVSIiwiZXhwIjoxNzIwMTQ3NzIwLCJpYXQiOjE3MjAxNDQxMjB9.s1xcGfBwO2DqxIk9n4ncd3cAZWy_PeTQnZabv1vAsPg

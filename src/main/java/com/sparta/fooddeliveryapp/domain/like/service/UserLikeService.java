@@ -60,32 +60,19 @@ public class UserLikeService {
         userLikeRepository.delete(userLike);
     }
 
-    public List<UserLikeResponseDto> getUserLike(UserLikeRequestDto userLikeRequestDto) {
-         List<UserLike> userLikeList = userLikeRepository.findAllByUserLikeTypeAndTypeId(userLikeRequestDto.getUserLikeType(), userLikeRequestDto.getTypeId()).orElseThrow(
-                () -> new NullPointerException("등록된 좋아요가 없습니다")
-        );
-        return userLikeList.stream().map(
-                userLike -> UserLikeResponseDto.builder()
-                        .userId(userLike.getUser().getUserId())
-                        .userLikeType(userLike.getUserLikeType())
-                        .typeId(userLike.getTypeId())
-                        .build()
-        ).toList();
-    }
+    public List<UserLikeResponseDto> getAllUserLikedByType(long userId, UserLikeRequestDto userLikeRequestDto, int page, int size) {
 
-    public List<UserLikeResponseDto> getAllUserLiked(UserLikeRequestDto userLikeRequestDto, User user, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<UserLike> userLikePage = userLikeRepository.findAllByUserLikeTypeAndUserUserIdOrderByTypeIdDesc(userLikeRequestDto.getUserLikeType(), user.getUserId(), pageable).orElseThrow(
-                () -> new NullPointerException("등록된 좋아요가 없습니다")
-        );
+        PageRequest pageRequest = PageRequest.of(page, size);
 
-        return userLikePage.stream().map(
-                userLike -> UserLikeResponseDto.builder()
-                        .userId(userLike.getUser().getUserId())
-                        .userLikeType(userLike.getUserLikeType())
-                        .typeId(userLike.getTypeId())
-                        .build()
-        ).toList();
+        return userLikeRepository.getUserLikeListByUserIdAndTypeWithPageAndSortPriceDesc(userId, userLikeRequestDto.getUserLikeType(), pageRequest.getOffset(), pageRequest.getPageSize())
+                .stream()
+                .map(m ->
+                        UserLikeResponseDto.builder()
+                                .userId(m.getUser().getUserId())
+                                .userLikeType(m.getUserLikeType())
+                                .typeId(m.getTypeId())
+                                .build()
+                        ).collect(Collectors.toList());
     }
 
     // QueryDSL
@@ -93,7 +80,7 @@ public class UserLikeService {
 
         PageRequest pageRequest = PageRequest.of(page, size);
 
-        return userLikeRepository.getUserLikeListWithPageAndSortPriceDesc(userId, pageRequest.getOffset(), pageRequest.getPageSize())
+        return userLikeRepository.getUserLikeListByUserIdWithPageAndSortPriceDesc(userId, pageRequest.getOffset(), pageRequest.getPageSize())
                 .stream()
                 .map(m ->
                         UserLikeResponseDto.builder()
@@ -107,16 +94,12 @@ public class UserLikeService {
 
 
     public int countStoreLiked(Store store){
-        List<UserLike> userLikeList = userLikeRepository.findAllByUserLikeTypeAndTypeId(UserLikeType.STORE, store.getStoreId()).orElseThrow(
-                () -> new NullPointerException("조회된 매장이 없습니다")
-        );
+        List<UserLike> userLikeList = userLikeRepository.getUserLikeListByUserLikeType(UserLikeType.STORE, store.getStoreId());
         return userLikeList.size();
     }
 
     public int countReviewLiked(Review review){
-        List<UserLike> userLikeList = userLikeRepository.findAllByUserLikeTypeAndTypeId(UserLikeType.REVIEW, review.getReviewId()).orElseThrow(
-                () -> new NullPointerException("조회된 리뷰가 없습니다")
-        );
+        List<UserLike> userLikeList = userLikeRepository.getUserLikeListByUserLikeType(UserLikeType.REVIEW, review.getReviewId());
         return userLikeList.size();
     }
 }

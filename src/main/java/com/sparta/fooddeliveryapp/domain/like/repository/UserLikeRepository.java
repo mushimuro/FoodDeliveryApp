@@ -15,8 +15,4 @@ public interface UserLikeRepository extends JpaRepository<UserLike, Long>, UserL
     boolean existsByUserAndUserLikeTypeAndTypeId(User user, UserLikeType userLikeType, Long typeId);
 
     Optional<UserLike> findByUserAndUserLikeTypeAndTypeId(User user, UserLikeType userLikeType, Long typeId);
-
-    Optional<List<UserLike>> findAllByUserLikeTypeAndTypeId(UserLikeType userLikeType, Long typeId);
-
-    Optional<Page<UserLike>> findAllByUserLikeTypeAndUserUserIdOrderByTypeIdDesc(UserLikeType userLikeType, Long userId, Pageable pageable);
 }

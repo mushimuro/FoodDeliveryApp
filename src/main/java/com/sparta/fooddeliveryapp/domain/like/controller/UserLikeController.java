@@ -50,19 +50,19 @@ public class UserLikeController {
                         .build());
     }
 
-    @GetMapping
-    public ResponseEntity<ResponseDto> getUserLike(@RequestBody UserLikeRequestDto userLikeRequestDto) {
-        List<UserLikeResponseDto> userLikeList = userLikeService.getUserLike(userLikeRequestDto);
-        return ResponseEntity.status(HttpStatus.OK).body(
-                ResponseDto.builder()
-                        .status(HttpStatus.OK)
-                        .message("좋아요 조회 성공")
-                        .data(userLikeList)
-                        .build());
-    }
+//    @GetMapping
+//    public ResponseEntity<ResponseDto> getUserLike(@RequestBody UserLikeRequestDto userLikeRequestDto) {
+//        List<UserLikeResponseDto> userLikeList = userLikeService.getUserLike(userLikeRequestDto);
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//                ResponseDto.builder()
+//                        .status(HttpStatus.OK)
+//                        .message("좋아요 조회 성공")
+//                        .data(userLikeList)
+//                        .build());
+//    }
 
-    // QueryDSL testing : order
-    @GetMapping("/get-user-like")
+    // QueryDSL
+    @GetMapping
     public List<UserLikeResponseDto> getUserLikeListWithPageAndSortPriceDesc(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @RequestParam(defaultValue = "0") int page,
@@ -72,13 +72,13 @@ public class UserLikeController {
     }
 
 
-    @GetMapping("/search-all-liked")
-    public List<UserLikeResponseDto> getAllUserLiked(
+    @GetMapping("by-type")
+    public List<UserLikeResponseDto> getAllUserLikedByType(
             @RequestBody UserLikeRequestDto userLikeRequestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size
     ) {
-        return userLikeService.getAllUserLiked(userLikeRequestDto, userDetails.getUser(), page, size);
+        return userLikeService.getAllUserLikedByType(userDetails.getUser().getUserId(), userLikeRequestDto, page, size);
     }
 }
